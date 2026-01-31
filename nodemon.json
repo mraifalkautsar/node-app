@@ -1,0 +1,24 @@
+{
+  "watch": ["src"],
+  "ext": "js,json",
+  "ignore": [
+    "node_modules/**",
+    "*.log",
+    "*.md",
+    ".env*",
+    "coverage/**",
+    ".nyc_output/**",
+    "logs/**",
+    "*.test.js",
+    "*.spec.js",
+    ".cache/**",
+    "tmp/**",
+    "temp/**",
+    "package-lock.json",
+    "package.json"
+  ],
+  "delay": 1000,
+  "verbose": false,
+  "legacyWatch": true,
+  "pollingInterval": 1000
+}
