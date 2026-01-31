@@ -3,7 +3,10 @@ services:
     image: postgres:15-alpine
     container_name: nimonspedia-db
     restart: unless-stopped
-    env_file: ./.env
+    environment:
+      POSTGRES_DB: nimonspedia_db
+      POSTGRES_USER: nimons_user
+      POSTGRES_PASSWORD: pass
     command:
       - "postgres"
       - "-c"
@@ -61,7 +64,7 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./node:/app:delegated
+      - ./:/app:delegated
       - /app/node_modules
     tmpfs:
       - /tmp
@@ -74,8 +77,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-      vite:
-        condition: service_started
     healthcheck:
       test:
         [

@@ -3,10 +3,10 @@ FROM node:20-alpine
 WORKDIR /app
 
 # Copy with explicit ownership (avoids permission issues)
-COPY --chown=node:node node/package*.json ./
+COPY --chown=node:node package*.json ./
 RUN npm install --frozen-lockfile
 
-COPY --chown=node:node node/ .
+COPY --chown=node:node . .
 
 # Create directories with proper permissions
 RUN mkdir -p /var/www/html/public/uploads && \

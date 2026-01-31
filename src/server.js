@@ -12,9 +12,6 @@ const server = app.listen(PORT, HOST, async () => {
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`Server running on: http://${HOST}:${PORT}`);
   console.log(`API Base: http://${HOST}:${PORT}/api`);
-  
-  // Warm cache on startup
-  await warmCache();
 });
 
 // Initialize Socket.IO

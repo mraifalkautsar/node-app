@@ -5,7 +5,13 @@ const cors = require("cors");
 const morgan = require("morgan");
 const path = require("path");
 const productsRoutes = require("./routes/product");
+const swaggerUi = require('swagger-ui-express');
+const swaggerSpec = require('./config/swagger');
+
 const app = express();
+
+// Swagger UI
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Trust proxy - required when behind nginx/reverse proxy
 app.set("trust proxy", 1);

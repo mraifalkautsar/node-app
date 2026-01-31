@@ -15,11 +15,76 @@ const loginLimiter = rateLimit({
   legacyHeaders: false,
 });
 
-// POST /admin/auth/login
+/**
+ * @swagger
+ * /admin/auth/login:
+ *   post:
+ *     summary: Admin login
+ *     description: Authenticate an admin user and get a token.
+ *     tags: [Admin - Auth]
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               email:
+ *                 type: string
+ *               password:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Login successful
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 token:
+ *                   type: string
+ *       401:
+ *         description: Invalid credentials
+ */
 router.post('/login', loginLimiter, authController.login);
-// POST /admin/auth/logout
+
+/**
+ * @swagger
+ * /admin/auth/logout:
+ *   post:
+ *     summary: Admin logout
+ *     description: Logout the current admin user.
+ *     tags: [Admin - Auth]
+ *     responses:
+ *       200:
+ *         description: Logout successful
+ */
 router.post('/logout', authController.logout);
-// GET /admin/auth/me
+
+/**
+ * @swagger
+ * /admin/auth/me:
+ *   get:
+ *     summary: Get current admin user
+ *     description: Get the details of the currently logged-in admin user.
+ *     tags: [Admin - Auth]
+ *     responses:
+ *       200:
+ *         description: Successful response
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 id:
+ *                   type: integer
+ *                 name:
+ *                   type: string
+ *                 email:
+ *                   type: string
+ *       401:
+ *         description: Unauthorized
+ */
 router.get('/me', authController.me);
 
 module.exports = router;

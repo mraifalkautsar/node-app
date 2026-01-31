@@ -26,11 +26,15 @@ async function useSessionUser(req, res, next) {
 }
 
 /**
- * GET /node/feature-flags/me
- * Get all feature flags for the current session user
+ * @swagger
+ * /feature-flags/me:
+ *   get:
+ *     summary: Get all feature flags for the current session user
+ *     tags: [Feature Flags]
+ *     responses:
+ *       200:
+ *         description: A list of feature flags for the current user.
  */
-("");
-
 router.get("/me", useSessionUser, async (req, res) => {
   try {
     const userId = req.user.user_id;
@@ -38,10 +42,8 @@ router.get("/me", useSessionUser, async (req, res) => {
 
     res.json({
       success: true,
-
       data: {
         flags,
-
         user_id: userId,
       },
     });
@@ -55,8 +57,20 @@ router.get("/me", useSessionUser, async (req, res) => {
 });
 
 /**
- * GET /node/feature-flags/me/:flagName
- * Check a single feature flag for the current session user
+ * @swagger
+ * /feature-flags/me/{flagName}:
+ *   get:
+ *     summary: Check a single feature flag for the current session user
+ *     tags: [Feature Flags]
+ *     parameters:
+ *       - in: path
+ *         name: flagName
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The result of the feature flag check.
  */
 router.get("/me/:flagName", useSessionUser, async (req, res) => {
   try {
@@ -83,14 +97,25 @@ router.get("/me/:flagName", useSessionUser, async (req, res) => {
 });
 
 /**
- * Public API for feature flag checks (used by PHP frontend)
- * No authentication required as it's internal API between services
- */
-
-/**
- * GET /node/feature-flags/check
- * Check a single feature flag for a user
- * Query params: user_id, flag
+ * @swagger
+ * /feature-flags/check:
+ *   get:
+ *     summary: Check a single feature flag for a user
+ *     tags: [Feature Flags]
+ *     parameters:
+ *       - in: query
+ *         name: user_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *       - in: query
+ *         name: flag
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: The result of the feature flag check.
  */
 router.get("/check", async (req, res) => {
   try {
@@ -131,9 +156,20 @@ router.get("/check", async (req, res) => {
 });
 
 /**
- * GET /api/feature-flags
- * Get all feature flags for a user
- * Query params: user_id
+ * @swagger
+ * /feature-flags:
+ *   get:
+ *     summary: Get all feature flags for a user
+ *     tags: [Feature Flags]
+ *     parameters:
+ *       - in: query
+ *         name: user_id
+ *         required: true
+ *         schema:
+ *           type: integer
+ *     responses:
+ *       200:
+ *         description: A list of feature flags for the user.
  */
 router.get("/", async (req, res) => {
   try {

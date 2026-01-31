@@ -2,6 +2,39 @@ const express = require('express');
 const router = express.Router();
 const { pool } = require('../config/database');
 
+/**
+ * @swagger
+ * /health:
+ *   get:
+ *     summary: Health check
+ *     description: Responds if the app is up and running
+ *     tags: [Health]
+ *     responses:
+ *       200:
+ *         description: App is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                 message:
+ *                   type: string
+ *                 timestamp:
+ *                   type: string
+ *                 database:
+ *                   type: object
+ *                   properties:
+ *                     connected:
+ *                       type: boolean
+ *                     timestamp:
+ *                       type: string
+ *                 uptime:
+ *                   type: number
+ *                 environment:
+ *                   type: string
+ */
 router.get('/', async (req, res) => {
   try {
     const result = await pool.query('SELECT NOW()');

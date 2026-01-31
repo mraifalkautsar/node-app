@@ -2,8 +2,22 @@ const express = require('express');
 const router = express.Router();
 const { getUserFromRequest } = require('../utils/phpSession');
 
-// GET /session/check
-// Ini buat testing doang, klo mau actual session checking kyk di PHP pakai phpSession.js
+/**
+ * @swagger
+ * /session/check:
+ *   get:
+ *     summary: Check the current session
+ *     tags: [Session]
+ *     responses:
+ *       200:
+ *         description: Session is valid.
+ *       400:
+ *         description: No cookies sent.
+ *       404:
+ *         description: Session not found or invalid.
+ *       500:
+ *         description: Internal server error.
+ */
 router.get('/check', async (req, res) => {
     try {
             const cookies = req.headers.cookie;
