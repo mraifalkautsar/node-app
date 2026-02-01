@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: nimonspedia-node-deployment
+  name: nimonspedia-node
   labels:
     app: nimonspedia-node
 spec:
