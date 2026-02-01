@@ -8,6 +8,11 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/nimonspedia-node
+  PROJECT_ID: project-22979784-7d52-40eb-92b
+  PROJECT_NUMBER: 316934781449
+  CLUSTER_NAME: YOUR_CLUSTER_NAME
+  CLUSTER_REGION: YOUR_CLUSTER_REGION
+  USE_GKE_GCLOUD_AUTH_PLUGIN: "True"
 
 jobs:
   build-and-deploy:
@@ -15,6 +20,7 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write   # REQUIRED for Workload Identity Federation
 
     steps:
       - name: Checkout repository
@@ -31,39 +37,44 @@ jobs:
       # Build and push Docker image
       - name: Build and push Docker image
         run: |
-          docker build -t $REGISTRY/$IMAGE_NAME:${{ github.sha }} -f Dockerfile .
+          docker build -t $REGISTRY/$IMAGE_NAME:${{ github.sha }} .
           docker push $REGISTRY/$IMAGE_NAME:${{ github.sha }}
 
-      # Set up kubectl
-      - name: Set up kubectl
-        uses: azure/setup-kubectl@v4
+      # Authenticate to Google Cloud (OIDC / WIF)
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
         with:
-          version: latest
+          workload_identity_provider: projects/316934781449/locations/global/workloadIdentityPools/github-pool/providers/github-provider
+          service_account: github-actions-gke@project-22979784-7d52-40eb-92b.iam.gserviceaccount.com
 
-      # Set up gcloud CLI for auth plugin
-      - name: Set up gcloud CLI
+      # Set up gcloud
+      - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
+      # kubectl
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      # GKE auth plugin
       - name: Install GKE auth plugin
         run: gcloud components install gke-gcloud-auth-plugin --quiet
 
-      # Configure kubeconfig
-      - name: Configure kubeconfig
+      # Generate kubeconfig dynamically (NO secrets)
+      - name: Get GKE credentials
         run: |
-          mkdir -p ~/.kube
-          echo "${{ secrets.KUBECONFIG }}" > ~/.kube/config
+          gcloud container clusters get-credentials $CLUSTER_NAME \
+            --region $CLUSTER_REGION \
+            --project $PROJECT_ID
 
       # Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
-          # First, apply all configurations and access control
           kubectl apply -f k8s/configmap.yaml
           kubectl apply -f k8s/ksa.yaml
           kubectl apply -f k8s/secret-provider-class.yaml
           kubectl apply -f k8s/service.yaml
-          
-          # Now, update the image in the deployment manifest
-          sed -i "s|image: .*|image: $REGISTRY/$IMAGE_NAME:${{ github.sha }}|g" k8s/deployment.yaml
-          
-          # Apply the updated deployment
-          kubectl apply -f k8s/deployment.yaml
+
+          kubectl set image deployment/nimonspedia-node \
+            nimonspedia-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
+
+          kubectl rollout status deployment/nimonspedia-node
