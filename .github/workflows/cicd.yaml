@@ -47,8 +47,6 @@ jobs:
           workload_identity_provider: projects/316934781449/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           service_account: github-actions-gke@project-22979784-7d52-40eb-92b.iam.gserviceaccount.com
 
-      - name: Who am I?
-        run: gcloud auth list
 
       # Set up gcloud
       - name: Set up gcloud
@@ -83,6 +81,7 @@ jobs:
           kubectl apply -f k8s/ksa.yaml
           kubectl apply -f k8s/secret-provider-class.yaml
           kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/deployment.yaml
 
           kubectl set image deployment/nimonspedia-node \
             nimonspedia-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
