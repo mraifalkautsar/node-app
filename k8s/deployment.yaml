@@ -14,20 +14,44 @@ spec:
       labels:
         app: nimonspedia-node
     spec:
+      serviceAccountName: nimonspedia-ksa
       containers:
         - name: nimonspedia-node
           image: your-docker-registry/nimonspedia-node:latest # Placeholder, will be replaced in CI/CD
           ports:
             - containerPort: 3000
-          envFrom:
-            - configMapRef:
-                name: nimonspedia-config
           env:
+            # Sourced from the configmap
+            - name: DB_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: nimonspedia-config
+                  key: DB_HOST
+            - name: DB_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: nimonspedia-config
+                  key: DB_PORT
+            - name: DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: nimonspedia-config
+                  key: DB_NAME
+            # Sourced from the secret created by the CSI driver
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: nimonspedia-gcp-creds
+                  key: DB_USER
             - name: DB_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: nimonspedia-db-secret
+                  name: nimonspedia-gcp-creds
                   key: DB_PASSWORD
+          volumeMounts:
+            - name: secrets-store-inline
+              mountPath: "/mnt/secrets-store"
+              readOnly: true
           resources:
             limits:
               memory: "512Mi"
@@ -35,3 +59,10 @@ spec:
             requests:
               memory: "256Mi"
               cpu: "250m"
+      volumes:
+        - name: secrets-store-inline
+          csi:
+            driver: secrets-store.csi.k8s.io
+            readOnly: true
+            volumeAttributes:
+              secretProviderClass: "nimonspedia-gcp-secrets"

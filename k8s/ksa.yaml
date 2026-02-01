@@ -1,0 +1,7 @@
+# k8s/ksa.yaml
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: nimonspedia-ksa
+  annotations:
+    iam.gke.io/gcp-service-account: nimonspedia-gsa@project-22979784-7d52-40eb-92b.iam.gserviceaccount.com

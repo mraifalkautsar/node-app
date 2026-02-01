@@ -4,7 +4,7 @@ node_modules
 # Ignore git and docker files
 .git
 .gitignore
-Dockerfile.node
+Dockerfile
 docker-compose.yml
 
 # Ignore documentation

@@ -30,7 +30,7 @@ services:
   node:
     build:
       context: .
-      dockerfile: Dockerfile.node
+      dockerfile: Dockerfile
     container_name: nimonspedia-node
     restart: unless-stopped
     env_file: ./.env
