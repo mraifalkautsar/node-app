@@ -44,6 +44,9 @@ jobs:
       - name: Set up gcloud CLI
         uses: google-github-actions/setup-gcloud@v2
 
+      - name: Install GKE auth plugin
+        run: gcloud components install gke-gcloud-auth-plugin --quiet
+
       # Configure kubeconfig
       - name: Configure kubeconfig
         run: |
