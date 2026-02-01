@@ -1,0 +1,21 @@
+# Ignore node_modules, we'll install them in the container
+node_modules
+
+# Ignore git and docker files
+.git
+.gitignore
+Dockerfile.node
+docker-compose.yml
+
+# Ignore documentation
+README.md
+context.md
+
+# Ignore environment files and logs
+.env
+*.log
+
+# Ignore user uploads and sql scripts
+uploads
+sql
+nodemon.json

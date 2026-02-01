@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nimonspedia-node-deployment
+  labels:
+    app: nimonspedia-node
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nimonspedia-node
+  template:
+    metadata:
+      labels:
+        app: nimonspedia-node
+    spec:
+      containers:
+        - name: nimonspedia-node
+          image: your-docker-registry/nimonspedia-node:latest # Placeholder, will be replaced in CI/CD
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: nimonspedia-config
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: nimonspedia-db-secret
+                  key: DB_PASSWORD
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+            requests:
+              memory: "256Mi"
+              cpu: "250m"

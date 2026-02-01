@@ -15,7 +15,7 @@ services:
       - "shared_buffers=256MB"
     volumes:
       - db-data:/var/lib/postgresql/data
-      - ./sql/initdb:/docker-entrypoint-initdb.d:ro
+      - ./sql:/docker-entrypoint-initdb.d:ro
     ports:
       - "5432:5432"
     healthcheck:
@@ -24,33 +24,6 @@ services:
       timeout: 5s
       retries: 5
       start_period: 10s
-    networks:
-      - nimonspedia
-
-  redis:
-    image: redis:7-alpine
-    container_name: nimonspedia-redis
-    restart: unless-stopped
-    ports:
-      - "6379:6379"
-    volumes:
-      - redis-data:/data
-    env_file: ./.env
-    command: >
-      redis-server
-      --appendonly yes
-      --appendfsync everysec
-      --maxmemory 256mb
-      --maxmemory-policy allkeys-lru
-      --loglevel notice
-      --save 900 1
-      --save 300 10
-      --save 60 10000
-    healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
-      interval: 10s
-      timeout: 3s
-      retries: 3
     networks:
       - nimonspedia
 
@@ -75,8 +48,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     healthcheck:
       test:
         [
@@ -96,7 +67,6 @@ services:
 
 volumes:
   db-data:
-  redis-data:
 
 networks:
   nimonspedia:

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nimonspedia-config
+data:
+  DB_HOST: "nimonspedia-db-service"
+  DB_PORT: "5432"
+  DB_NAME: "nimonspedia_db"
+  DB_USER: "nimons_user"
+  # todo: put on Kubernetes secrets
