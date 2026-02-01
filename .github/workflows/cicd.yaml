@@ -40,6 +40,10 @@ jobs:
         with:
           version: latest
 
+      # Set up gcloud CLI for auth plugin
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+
       # Configure kubeconfig
       - name: Configure kubeconfig
         run: |
