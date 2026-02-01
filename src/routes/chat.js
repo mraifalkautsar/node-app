@@ -7,7 +7,6 @@ const path = require('path');
 const fs = require('fs');
 const UPLOAD_BASE = process.env.UPLOAD_DIR || '/uploads';
 const uploadDir = path.join(UPLOAD_BASE, 'chat');
-fs.mkdirSync(uploadDir, { recursive: true });
 
 const upload = multer({ dest: uploadDir });
 
