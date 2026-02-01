@@ -37,28 +37,17 @@ spec:
                 configMapKeyRef:
                   name: nimonspedia-config
                   key: DB_NAME
-            # Sourced from the secret created by the CSI driver
-            - name: DB_USER
-              valueFrom:
-                secretKeyRef:
-                  name: nimonspedia-gcp-creds
-                  key: DB_USER
-            - name: DB_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: nimonspedia-gcp-creds
-                  key: DB_PASSWORD
           volumeMounts:
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
           resources:
-            limits:
-              memory: "512Mi"
-              cpu: "500m"
             requests:
-              memory: "256Mi"
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
               cpu: "250m"
+              memory: "256Mi"
       volumes:
         - name: secrets-store-inline
           csi:
