@@ -1,16 +1,18 @@
 const { Pool } = require("pg");
+const { DB_USER, DB_PASSWORD } = require("./secrets");
 
 // Database connection pool
 const pool = new Pool({
   host: process.env.DB_HOST,
   port: parseInt(process.env.DB_PORT, 10),
   database: process.env.DB_NAME,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
+  user: DB_USER,
+  password: DB_PASSWORD,
   max: 20,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 2000,
 });
+
 
 pool.on("connect", () => {
   console.log("✓ Database connected successfully");
