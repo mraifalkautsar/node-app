@@ -20,6 +20,7 @@ spec:
           image: ghcr.io/mraifalkautsar/node-app/nimonspedia-node:68784c2ec6b7187e6f91bcb8292ccde421a1d121
           ports:
             - containerPort: 3000
+
           env:
             # Sourced from the configmap
             - name: DB_HOST
@@ -37,10 +38,17 @@ spec:
                 configMapKeyRef:
                   name: nimonspedia-config
                   key: DB_NAME
+
           volumeMounts:
+            # GCP Secret Manager via CSI (read-only)
             - name: secrets-store-inline
               mountPath: "/mnt/secrets-store"
               readOnly: true
+
+            # Writable uploads directory (fixes EACCES)
+            - name: uploads
+              mountPath: "/uploads"
+
           resources:
             requests:
               cpu: "100m"
@@ -48,10 +56,16 @@ spec:
             limits:
               cpu: "250m"
               memory: "256Mi"
+
       volumes:
+        # CSI secrets
         - name: secrets-store-inline
           csi:
             driver: secrets-store.csi.k8s.io
             readOnly: true
             volumeAttributes:
               secretProviderClass: "nimonspedia-gcp-secrets"
+
+        # Writable volume for uploads
+        - name: uploads
+          emptyDir: {}
