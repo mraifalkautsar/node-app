@@ -10,8 +10,8 @@ env:
   IMAGE_NAME: ${{ github.repository }}/nimonspedia-node
   PROJECT_ID: project-22979784-7d52-40eb-92b
   PROJECT_NUMBER: 316934781449
-  CLUSTER_NAME: YOUR_CLUSTER_NAME
-  CLUSTER_REGION: YOUR_CLUSTER_REGION
+  CLUSTER_NAME: cluster-test
+  CLUSTER_REGION: asia-southeast1
   USE_GKE_GCLOUD_AUTH_PLUGIN: "True"
 
 jobs:
