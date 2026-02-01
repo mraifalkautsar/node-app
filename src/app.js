@@ -10,6 +10,9 @@ const swaggerSpec = require('./config/swagger');
 
 const app = express();
 
+const UPLOAD_BASE = process.env.UPLOAD_DIR || '/uploads';
+const CHAT_UPLOAD_DIR = path.join(UPLOAD_BASE, 'chat');
+
 // Swagger UI
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
@@ -60,7 +63,7 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/products', productsRoutes);
 app.use('/feature-flags', featureFlagsRoutes);
 app.use('/session', sessionCheckRoutes);
-app.use('/uploads/chat', express.static(path.join(__dirname, '../uploads/chat')));
+app.use('/uploads/chat', express.static(CHAT_UPLOAD_DIR));
 
 // Root endpoint (buat dapetin metadata)
 app.get("/api", (req, res) => {

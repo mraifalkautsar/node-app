@@ -268,8 +268,8 @@ async function uploadImage(req, res, next) {
 
 		// misal kamu serve folder /uploads secara statis
 		// sehingga URL-nya bisa: /node/uploads/chat/<filename> (via nginx proxy)
-		const fileUrl = `/node/uploads/chat/${req.file.filename}`;
-
+		const fileUrl = `/uploads/chat/${req.file.filename}`;
+		
 		return res.json({
 			success: true,
 			url: fileUrl,

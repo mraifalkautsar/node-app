@@ -4,8 +4,9 @@ const chatController = require('../controllers/chatController');
 const orderController = require('../controllers/orderController');
 const multer = require('multer');
 const path = require('path');
-const uploadDir = path.join(__dirname, '../../uploads/chat');
 const fs = require('fs');
+const UPLOAD_BASE = process.env.UPLOAD_DIR || '/uploads';
+const uploadDir = path.join(UPLOAD_BASE, 'chat');
 fs.mkdirSync(uploadDir, { recursive: true });
 
 const upload = multer({ dest: uploadDir });

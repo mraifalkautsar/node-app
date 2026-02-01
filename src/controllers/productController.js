@@ -73,10 +73,11 @@ function formatRupiah(n) {
 }
 
 function toPublicProductImageUrl(imagePath) {
-	if (!imagePath) return null;
-	if (String(imagePath).startsWith('http')) return imagePath;
-	const cleanPath = String(imagePath).replace(/^\/uploads\//, '');
-	return `/uploads/${cleanPath}`;
+  if (!imagePath) return null;
+  if (String(imagePath).startsWith('http')) return imagePath;
+
+  const cleanPath = String(imagePath).replace(/^\/+/, '');
+  return `/uploads/${cleanPath}`;
 }
 
 module.exports = {

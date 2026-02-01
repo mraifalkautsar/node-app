@@ -17,7 +17,7 @@ spec:
       serviceAccountName: nimonspedia-ksa
       containers:
         - name: nimonspedia-node
-          image: your-docker-registry/nimonspedia-node:latest # Placeholder, will be replaced in CI/CD
+          image: ghcr.io/mraifalkautsar/node-app/nimonspedia-node:68784c2ec6b7187e6f91bcb8292ccde421a1d121
           ports:
             - containerPort: 3000
           env:
