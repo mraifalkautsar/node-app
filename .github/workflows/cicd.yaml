@@ -47,6 +47,9 @@ jobs:
           workload_identity_provider: projects/316934781449/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           service_account: github-actions-gke@project-22979784-7d52-40eb-92b.iam.gserviceaccount.com
 
+      - name: Who am I?
+        run: gcloud auth list
+
       # Set up gcloud
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
@@ -58,6 +61,12 @@ jobs:
       # GKE auth plugin
       - name: Install GKE auth plugin
         run: gcloud components install gke-gcloud-auth-plugin --quiet
+
+      - name: Debug ADC
+        run: |
+          echo "ADC file:"
+          ls -l $GOOGLE_APPLICATION_CREDENTIALS
+          gcloud auth print-access-token | head -c 20
 
       # Generate kubeconfig dynamically (NO secrets)
       - name: Get GKE credentials
