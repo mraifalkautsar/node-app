@@ -61,10 +61,11 @@ jobs:
 
       # Generate kubeconfig dynamically (NO secrets)
       - name: Get GKE credentials
-        run: |
-          gcloud container clusters get-credentials $CLUSTER_NAME \
-            --region $CLUSTER_REGION \
-            --project $PROJECT_ID
+        uses: google-github-actions/get-gke-credentials@v2
+        with:
+          cluster_name: cluster-test
+          location: asia-southeast1
+          project_id: project-22979784-7d52-40eb-92b
 
       # Deploy to Kubernetes
       - name: Deploy to Kubernetes
