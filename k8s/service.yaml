@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: nimonspedia-node-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: nimonspedia-node
   ports:

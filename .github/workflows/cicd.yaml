@@ -74,8 +74,6 @@ jobs:
           kubectl apply -f k8s/ksa.yaml
           kubectl apply -f k8s/secret-provider-class.yaml
           kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/ingressclass.yaml
-          kubectl apply -f k8s/ingress.yaml
           kubectl apply -f k8s/deployment.yaml
 
           kubectl set image deployment/nimonspedia-node \
