@@ -19,4 +19,4 @@ USER node
 EXPOSE 3000
 
 # Start the application with pm2
-CMD ["npm", "start"]
+CMD ["pm2-runtime", "src/server.js"]
