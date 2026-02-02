@@ -38,6 +38,11 @@ spec:
                 configMapKeyRef:
                   name: nimonspedia-config
                   key: DB_NAME
+            - name: API_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: nimonspedia-config
+                  key: API_HOST
 
           volumeMounts:
             # GCP Secret Manager via CSI (read-only)
