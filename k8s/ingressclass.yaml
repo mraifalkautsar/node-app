@@ -1,3 +1,4 @@
+# Obsolete for now, GKE issues.
 apiVersion: networking.k8s.io/v1
 kind: IngressClass
 metadata:
