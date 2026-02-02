@@ -6,3 +6,4 @@ data:
   DB_HOST: "34.126.134.86"
   DB_PORT: "5432"
   DB_NAME: "postgres"
+  API_HOST: 'http://{{ ansible_host }}:{{ app_port }}'

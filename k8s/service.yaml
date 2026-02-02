@@ -3,11 +3,10 @@ kind: Service
 metadata:
   name: nimonspedia-node-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: nimonspedia-node
   ports:
     - protocol: TCP
       port: 80
       targetPort: 3000
-      nodePort: 30007

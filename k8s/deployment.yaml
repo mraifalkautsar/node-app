@@ -45,7 +45,7 @@ spec:
               mountPath: "/mnt/secrets-store"
               readOnly: true
 
-            # Writable uploads directory (fixes EACCES)
+            # Uploads (for app uploads)
             - name: uploads
               mountPath: "/uploads"
 

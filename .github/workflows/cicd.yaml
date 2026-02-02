@@ -20,7 +20,7 @@ jobs:
     permissions:
       contents: read
       packages: write
-      id-token: write   # REQUIRED for Workload Identity Federation
+      id-token: write
 
     steps:
       - name: Checkout repository
@@ -47,7 +47,6 @@ jobs:
           workload_identity_provider: projects/316934781449/locations/global/workloadIdentityPools/github-pool/providers/github-provider
           service_account: github-actions-gke@project-22979784-7d52-40eb-92b.iam.gserviceaccount.com
 
-
       # Set up gcloud
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
@@ -56,17 +55,11 @@ jobs:
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
 
-      # GKE auth plugin
+      # GKE Auth Plugin
       - name: Install GKE auth plugin
         run: gcloud components install gke-gcloud-auth-plugin --quiet
 
-      - name: Debug ADC
-        run: |
-          echo "ADC file:"
-          ls -l $GOOGLE_APPLICATION_CREDENTIALS
-          gcloud auth print-access-token | head -c 20
-
-      # Generate kubeconfig dynamically (NO secrets)
+      # Generate GKE Credentials
       - name: Get GKE credentials
         uses: google-github-actions/get-gke-credentials@v2
         with:
@@ -81,6 +74,7 @@ jobs:
           kubectl apply -f k8s/ksa.yaml
           kubectl apply -f k8s/secret-provider-class.yaml
           kubectl apply -f k8s/service.yaml
+          kubectl apply -f k8s/ingress.yaml
           kubectl apply -f k8s/deployment.yaml
 
           kubectl set image deployment/nimonspedia-node \
