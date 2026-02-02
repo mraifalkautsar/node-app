@@ -8,13 +8,9 @@ function readSecret(path) {
   }
 }
 
-const DB_USER =
-  process.env.DB_USER ||
-  readSecret("/mnt/secrets-store/DB_USER");
+const DB_USER = readSecret("/mnt/secrets-store/DB_USER");
 
-const DB_PASSWORD =
-  process.env.DB_PASSWORD ||
-  readSecret("/mnt/secrets-store/DB_PASSWORD");
+const DB_PASSWORD = readSecret("/mnt/secrets-store/DB_PASSWORD");
 
 module.exports = {
   DB_USER,
