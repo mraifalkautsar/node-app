@@ -5,8 +5,9 @@ WORKDIR /app
 # Copy package.json and package-lock.json first to leverage Docker caching
 COPY --chown=node:node package*.json ./
 
-# Install dependencies
+# Install dependencies and pm2
 RUN npm install --frozen-lockfile --production
+RUN npm install pm2 -g
 
 # Copy the rest of the application code
 COPY --chown=node:node . .
@@ -17,5 +18,5 @@ USER node
 # Expose the port the app runs on
 EXPOSE 3000
 
-# Start the application
-CMD ["npm", "start"]
+# Start the application with pm2
+CMD ["pm2-runtime", "src/server.js"]

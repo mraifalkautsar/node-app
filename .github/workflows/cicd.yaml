@@ -76,6 +76,8 @@ jobs:
           kubectl apply -f k8s/service.yaml
           kubectl apply -f k8s/deployment.yaml
           kubectl apply -f k8s/hpa.yaml
+          kubectl apply -f k8s/namespace.yaml
+          kubectl apply -f k8s/node-exporter.yaml
 
           kubectl set image deployment/nimonspedia-node \
             nimonspedia-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}
