@@ -51,7 +51,7 @@ jobs:
       - name: Set up gcloud
         uses: google-github-actions/setup-gcloud@v2
 
-      # kubectl
+      # Set up kubectl
       - name: Set up kubectl
         uses: azure/setup-kubectl@v4
 
@@ -70,14 +70,14 @@ jobs:
       # Deploy to Kubernetes
       - name: Deploy to Kubernetes
         run: |
-          kubectl apply -f k8s/configmap.yaml
-          kubectl apply -f k8s/ksa.yaml
-          kubectl apply -f k8s/secret-provider-class.yaml
-          kubectl apply -f k8s/service.yaml
-          kubectl apply -f k8s/deployment.yaml
-          kubectl apply -f k8s/hpa.yaml
-          kubectl apply -f k8s/namespace.yaml
-          kubectl apply -f k8s/node-exporter.yaml
+          kubectl apply -f k8s/secrets/configmap.yaml
+          kubectl apply -f k8s/secrets/ksa.yaml
+          kubectl apply -f k8s/secrets/secret-provider-class.yaml
+          kubectl apply -f k8s/app/service.yaml
+          kubectl apply -f k8s/app/deployment.yaml
+          kubectl apply -f k8s/hpa/hpa.yaml
+          kubectl apply -f k8s/monitoring/namespace.yaml
+          kubectl apply -f k8s/monitoring/node-exporter.yaml
 
           kubectl set image deployment/nimonspedia-node \
             nimonspedia-node=$REGISTRY/$IMAGE_NAME:${{ github.sha }}

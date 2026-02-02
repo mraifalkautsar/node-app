@@ -7,12 +7,6 @@ function getPool() {
   if (!pool) {
     const { user, password } = getDbSecrets();
 
-    console.log(process.env.DB_HOST)
-    console.log(process.env.DB_PORT)
-    console.log(process.env.DB_NAME)
-    console.log(user)
-    console.log(password)
-
     pool = new Pool({
       host: process.env.DB_HOST,
       port: parseInt(process.env.DB_PORT, 10),
