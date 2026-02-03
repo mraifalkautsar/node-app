@@ -1,40 +1,33 @@
 const { Pool } = require("pg");
 const { getDbSecrets } = require("./secrets");
 
-let pool;
+const { user, password } = getDbSecrets();
 
-function getPool() {
-  if (!pool) {
-    const { user, password } = getDbSecrets();
+// Database connection pool
+const pool = new Pool({
+  host: process.env.DB_HOST,
+  port: parseInt(process.env.DB_PORT, 10),
+  database: process.env.DB_NAME,
+  user,
+  password,
+  max: 20,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 2000,
+});
 
-    pool = new Pool({
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT, 10),
-      database: process.env.DB_NAME,
-      user,
-      password,
-      ssl: {
-        rejectUnauthorized: false,
-      },
-    });
 
-    pool.on("connect", () => {
-      console.log("✓ Database connected successfully");
-    });
+pool.on("connect", () => {
+  console.log("✓ Database connected successfully");
+});
 
-    pool.on("error", (err) => {
-      console.error("Unexpected database error:", err);
-      process.exit(1);
-    });
-  }
+pool.on("error", (err) => {
+  console.error("Unexpected database error:", err);
+  process.exit(-1);
+});
 
-  return pool;
-}
-
+// Query helper function
 const query = async (text, params) => {
   const start = Date.now();
-  const pool = getPool();
-
   try {
     const res = await pool.query(text, params);
     const duration = Date.now() - start;
@@ -46,10 +39,9 @@ const query = async (text, params) => {
   }
 };
 
+// Transaction helper
 const transaction = async (callback) => {
-  const pool = getPool();
   const client = await pool.connect();
-
   try {
     await client.query("BEGIN");
     const result = await callback(client);
@@ -64,7 +56,7 @@ const transaction = async (callback) => {
 };
 
 module.exports = {
-  getPool,
+  pool,
   query,
   transaction,
 };
